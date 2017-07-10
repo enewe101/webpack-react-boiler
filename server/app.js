@@ -21,7 +21,7 @@ var webpackHotMiddleware = require("webpack-hot-middleware");
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
-  publicPath: '/assets/',
+  publicPath: '/',
   stats: {
     colors: true,
   },
