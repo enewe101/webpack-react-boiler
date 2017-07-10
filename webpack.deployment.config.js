@@ -1,31 +1,30 @@
-const path = require('path');
-const webpack = require('webpack');
+var path = require('path');
+var webpack = require('webpack');
+
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
+  template: './index.html',
+  filename: 'index.html',
+  inject: 'body'
+})
 
 module.exports = {
-  devtool: 'source-map',
-
+  context: path.join(__dirname, 'client-src'),
   entry: [
-    './app/index.js'
+    './index.js'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'client-build'),
     filename: 'bundle.js',
-    publicPath: '/dist/'
+    publicPath: '/'
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings: false
-      }
-    })
-  ],
   module: {
     loaders: [
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        include: path.join(__dirname, 'app'),
+        include: path.join(__dirname, 'client-src'),
         exclude: /node_modules/,
         query: {
           presets: ['es2015', 'react']
@@ -33,4 +32,9 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    HtmlWebpackPluginConfig,
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
 };
