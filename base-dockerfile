@@ -20,7 +20,6 @@ RUN npm install --quiet
 
 # Now copy all the rest of the files and build the app
 COPY . /usr/src/app
-RUN npm run build
 
 # Configure nginx to serve the app
 RUN cp nginx-config /etc/nginx/sites-available/react-webpack-boiler
@@ -30,5 +29,7 @@ RUN rm /etc/nginx/sites-enabled/default
 # Expose ports
 EXPOSE 80 443
 
-# Start the app under pm2 to keep it alive, and restart nginx reverse proxy
-CMD pm2 start server/app.js && /etc/init.d/nginx restart && tail -f /dev/null
+# A this point, the app itself still needs to be built, and then 
+# At container runtime, the reverse-proxy should be restarted, and the app
+# itself should be started.  This is carried out differently for production vs.
+# for development.

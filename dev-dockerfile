@@ -1,0 +1,13 @@
+FROM enewel3/react:base1
+MAINTAINER Edward Newell
+
+# Starting from an image of the basic running environment, we'll 
+# - restart the reverse proxy
+# - install the npm-managed dependencies
+# - build the app in dev-mode
+#
+# We do the last two steps at runtime in the container, instead of at build
+# time so that we always build the app based on the latest version of the files 
+# in the working directory, whereas in production this is all done while
+# building the docker image.
+CMD /etc/init.d/nginx restart && npm install && npm run dev-build && tail -f /dev/null

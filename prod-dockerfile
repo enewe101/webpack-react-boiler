@@ -1,0 +1,9 @@
+FROM enewel3/react:base1
+MAINTAINER Edward Newell
+
+# Build the app for production
+RUN npm run prod-build
+# Set the environment to indicate we're in production
+ENV NODE_ENV production
+# Start the server under pm2 supervisor, restart reverse proxy, and wait
+CMD pm2 start server/app.js && /etc/init.d/nginx restart && tail -f /dev/null

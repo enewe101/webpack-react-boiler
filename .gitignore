@@ -1,4 +1,9 @@
+*.swp
+*.swo
+~*
+*~
 npm-debug.log
 node_modules
 client-build
 static
+.DS_Store
