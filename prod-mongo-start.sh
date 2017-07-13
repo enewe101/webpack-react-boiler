@@ -14,7 +14,7 @@ fi
 # Create a mongodb production container (destroy old one first if exsits).
 ./prod-mongo-stop.sh
 docker run -dv prod-mongo-volume:/data/db --name prod-mongo-container \
-	enewel3/react:mongo
+	enewel3/react:mongo-1
 
 # And if we just created the volume, then we need to seed mongodb
 if [ -z $mongo_volume_exists ]; then

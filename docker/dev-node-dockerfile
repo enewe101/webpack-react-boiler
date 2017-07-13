@@ -10,4 +10,5 @@ MAINTAINER Edward Newell
 # time so that we always build the app based on the latest version of the files 
 # in the working directory, whereas in production this is all done while
 # building the docker image.
+ENV NODE_ENV development
 CMD /etc/init.d/nginx restart && npm install && npm run dev-build && tail -f /dev/null

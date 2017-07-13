@@ -13,7 +13,8 @@ fi
 
 # Create a mongodb dev container (in case one already exists destroy it first).
 ./dev-mongo-stop.sh
-docker run -dv dev-mongo-volume:/data/db --name dev-mongo-container enewel3/react:mongo
+docker run -dv dev-mongo-volume:/data/db --name dev-mongo-container \
+	enewel3/react:mongo-1 
 
 # And if we just created the volume, then we need to seed mongodb
 if [ -z $mongo_volume_exists ]; then
