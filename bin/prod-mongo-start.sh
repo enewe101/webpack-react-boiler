@@ -20,6 +20,6 @@ docker run -dv prod-mongo-volume:/data/db --name prod-mongo-container \
 # And if we just created the volume, then we need to seed mongodb.
 if [ -z $mongo_volume_exists ]; then
 	echo 'seeding prod-mongo-container'
-	docker exec prod-mongo-container \
-		bash -c 'mongo < /usr/src/app/prod-mongo-setup.js'
+	docker cp dump/prod-dump prod-mongo-container:/dump
+	docker exec prod-mongo-container mongorestore /dump
 fi
