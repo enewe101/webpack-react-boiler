@@ -3,8 +3,8 @@ MAINTAINER Edward Newell
 
 # Install dependencies
 RUN apt-get update
-RUN apt-get -qq -y install nodejs npm nginx
-RUN npm install -g --quiet pm2
+RUN apt-get -qq -y install nodejs npm nginx > /dev/null
+RUN npm install -g --silent pm2
 
 # Because of a name collision, the "node" command gets called "nodejs" on Ubuntu.  
 # Force it to be "node" so that npm commands work properly.

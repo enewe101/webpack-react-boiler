@@ -12,7 +12,7 @@ if [ -z $mongo_volume_exists ]; then
 fi
 
 # Stop and destroy the production mongo container.
-./prod-mongo-stop.sh
+./bin/prod-mongo-stop.sh
 # Start the production mongo container.
 docker run -dv prod-mongo-volume:/data/db --name prod-mongo-container \
 	enewel3/react:mongo-1

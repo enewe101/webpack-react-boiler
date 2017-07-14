@@ -1,4 +1,4 @@
-FROM enewel3/react:base1
+FROM enewel3/react:base-node-1
 MAINTAINER Edward Newell
 
 # Build the app for production

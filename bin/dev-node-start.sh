@@ -4,7 +4,7 @@
 #       app directory by mounting current working directory.
 
 # Stop and destroy the development node container if one exists.
-./dev-node-stop.sh
+./bin/dev-node-stop.sh
 
 # Start the development node container, linkin it to the mongo container.
 docker run -dp 80:80 -v $(pwd):/usr/src/app --name dev-node-container \

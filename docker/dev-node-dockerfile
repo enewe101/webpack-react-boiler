@@ -1,4 +1,4 @@
-FROM enewel3/react:base1
+FROM enewel3/react:base-node-1
 MAINTAINER Edward Newell
 
 # Starting from an image of the basic running environment, we'll 

@@ -12,7 +12,7 @@ if [ -z $mongo_volume_exists ]; then
 fi
 
 # Stop and destroy the development mongo container.
-./dev-mongo-stop.sh
+./bin/dev-mongo-stop.sh
 # Create the development mongo container.
 docker run -dv dev-mongo-volume:/data/db --name dev-mongo-container \
 	enewel3/react:mongo-1
