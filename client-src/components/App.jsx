@@ -77,7 +77,7 @@ class App extends React.Component {
 
       return (
         <div>
-          <div>yo</div>
+          <div>yo yo yo</div>
           <div>{listItems}</div>
 
           <input type="text" value={this.state.newTodoText}

@@ -6,4 +6,7 @@ npm-debug.log
 node_modules
 client-build
 static
+keys.txt
 .DS_Store
+dump
+.jsrc

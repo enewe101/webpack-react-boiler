@@ -1,3 +1,4 @@
+"use strict";
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -14,25 +15,15 @@ app.use(bodyParser.json());
 app.use('/', publicPath);
 app.get('/', function (req, res) { res.sendFile(indexPath) });
 app.get('/data', (req, res) => {
-  //const chris = new User({
-  //  name: 'Chris',
-  //  username: 'sevilayha',
-  //  password: 'password'
-  //});
-  //chris.save((err) => {
-  //  if (err)
-  //    throw err;
-  //  console.log('user saved');
-  //});
   res.send("take what you GET");
 });
 app.post('/data', function(req, res){
   res.send(`get what you POSTed: '${req.body.name}'`)});
-const mongo_url = (
-  process.env.MONGODB_PORT_27017_TCP_ADDR + ':' +
-  process.env.MONGODB_PORT_27017_TCP_PORT
-);
-mongoose.connect('mongodb://' + mongo_url + '/react');
+
+const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
+const mongo_connect_url = 'mongodb://' + auth_string + '@mongodb:27017/react';
+console.log(mongo_connect_url);
+mongoose.connect(mongo_connect_url);
 
 // Additional setup for dev server
 const webpack = require('webpack')
@@ -59,4 +50,4 @@ app.use(webpackHotMiddleware(compiler, {
 }));
 
 app.listen(port)
-console.log(`Listening carefully at http://localhost:${port}`)
+console.log(`point browser to http://localhost:${port}`)

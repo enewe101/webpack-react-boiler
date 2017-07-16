@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  node-base:
+    build:
+      context: ../
+      dockerfile: docker/base-node-dockerfile
+    image: 'node-base'
+
+  node:
+    env_file:
+      - ../.jsrc
+    build:
+      context: ../
+      dockerfile: docker/prod-node-dockerfile
+    ports:
+      - 80:80
+    links:
+      - mongodb
+    depends_on:
+      - node-base
+    image: 'node:prod-1'
+
+  mongodb:
+    env_file:
+      - ../.jsrc
+    build:
+      context: ../
+      dockerfile: docker/mongo-dockerfile
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata-prod:/data/db
+      - ../mongo-entrypoint/:/docker-entrypoint-initdb.d/
+    image: 'mongodb:prod-1'
+
+volumes:
+    mongodata-prod:

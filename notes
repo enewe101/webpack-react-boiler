@@ -1,0 +1,10 @@
+Differences between prod and dev
+- prod does not use hot reloading, dev does
+- prod has NODE_ENV=production, dev has NODE_ENV=development
+- prod docker image builds node, whereas dev container builds node
+- prod runs node using ps2, dev runs it directly
+- prod runs node on container startup, dev starts container, then attaches
+	by exec and runs node in a terminal so it can be restarted easily
+- prod and dev load different dumps into mongoDB after starting it 
+- both dev and prod node image have app files copied in, but dev container also
+	  mounts app files as a volume so code edits will be seen by the container
