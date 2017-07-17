@@ -9,4 +9,4 @@ static
 keys.txt
 .DS_Store
 dump
-.jsrc
+prod.env

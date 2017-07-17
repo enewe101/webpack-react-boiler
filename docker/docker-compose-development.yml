@@ -9,8 +9,8 @@ services:
 
   node:
     environment:
-      - APP_DB_USER=react
-      - APP_DB_PASS=react
+      - APP_DB_USER
+      - APP_DB_PASS
     build:
       context: ../
       dockerfile: docker/dev-node-dockerfile
@@ -26,10 +26,10 @@ services:
 
   mongodb:
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
-      - APP_DB_USER=react
-      - APP_DB_PASS=react
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - APP_DB_USER
+      - APP_DB_PASS
     build:
       context: ../
       dockerfile: docker/mongo-dockerfile

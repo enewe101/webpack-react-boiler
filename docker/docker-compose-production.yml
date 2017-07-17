@@ -8,8 +8,9 @@ services:
     image: 'node-base'
 
   node:
-    env_file:
-      - ../.jsrc
+    environment:
+      - APP_DB_USER
+      - APP_DB_PASS
     build:
       context: ../
       dockerfile: docker/prod-node-dockerfile
@@ -22,8 +23,11 @@ services:
     image: 'node:prod-1'
 
   mongodb:
-    env_file:
-      - ../.jsrc
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - APP_DB_USER
+      - APP_DB_PASS
     build:
       context: ../
       dockerfile: docker/mongo-dockerfile

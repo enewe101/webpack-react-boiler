@@ -15,7 +15,7 @@
 #   As a last resort, try killing, removing all containers, volumes, and images,
 #   and then run this script.
 #
-
+source .env
 if [ -n "$1" ]; then
 	if [ "$1" = "--force-recreate" ]; then
 		docker-compose -p mern -f docker/docker-compose-development.yml down

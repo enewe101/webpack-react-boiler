@@ -15,9 +15,14 @@
 #   As a last resort, try killing, removing all containers, volumes, and images,
 #   and then run this script.
 #
+if [ -z $APP_DB_USER ]; then
+	echo 'You forgot to source the production environment variables'
+	exit 1
+fi
 if [ -n "$1" ]; then
 	if [ "$1" = "--force-recreate" ]; then
 		docker-compose -p mern -f docker/docker-compose-production.yml down
+		docker volume prune 
 	fi
 fi
 docker-compose -p mern -f docker/docker-compose-production.yml up

@@ -10,4 +10,4 @@
 #   restart node under pm2 by running ``pm2 start ecosystem.config.json``, or
 #   run the node app without pm2, by running ``node server/app.js``.
 #
-docker exec -it reactexpress_node_1 bash -c 'bash --init-file <(echo "pm2 log")'
+docker exec -it mern_node_1 bash -c 'bash --init-file <(echo "pm2 log")'

@@ -14,7 +14,7 @@ var oauth = require('oauth');
 
 
 // Basic setup for the server
-const ip = '138.197.148.132';
+const ip = '159.203.30.146';
 const _twitterConsumerKey = "ADGLPx9iJUL6oNl7RyozTgaZG";
 const _twitterConsumerSecret = "ZwcXeDJwNDWsLWKvw6wxQFVeFRxkVMzcZ7rV6QzugPnSWTSbdQ";
 
