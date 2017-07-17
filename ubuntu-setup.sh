@@ -35,6 +35,6 @@ curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compos
 chmod +x /usr/local/bin/docker-compose
 
 # Install ssl certificate managing software
-add-apt-repository ppa:certbot/certbot
+add-apt-repository -y ppa:certbot/certbot
 apt-get update
 apt-get install -y certbot
