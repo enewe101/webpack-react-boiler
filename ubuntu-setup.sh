@@ -1,8 +1,8 @@
 # Create a non-root user to run the app
-echo creating non-root appuser
-adduser --disabled-password --gecos '' appuser
-echo appuser:$USER_PASS | chpasswd 
-usermod -aG sudo appuser
+echo creating non-root user called '$HOST_USER'
+adduser --disabled-password --gecos '' $HOST_USER
+echo $HOST_USER:$HOST_USER_PASS | chpasswd
+usermod -aG sudo $HOST_USER
 
 # Install docker
 # Remove any old version
@@ -23,12 +23,12 @@ add-apt-repository \
 apt-get update > /dev/null
 apt-get install -y docker-ce
 
-# Make the appuser able to run docker
-echo adding appuser to docker group...
+# Make the HOST_USER able to run docker
+echo adding $HOST_USER to docker group...
 groupadd docker
-usermod -aG docker appuser
+usermod -aG docker $HOST_USER
 systemctl enable docker
-	
+
 # Install docker-compose
 echo installing docker-compose
 curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
