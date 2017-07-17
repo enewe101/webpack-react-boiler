@@ -1,2 +1,2 @@
 FROM mongo
-COPY . /usr/src/app
+COPY . /app

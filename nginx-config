@@ -5,15 +5,15 @@ server {
 	server_name 138.197.152.84;
 
 	location ~ /static {
-		root /home/enewel3/webpack-react-boiler;
+		root /app
 		access_log off;
 		expires 24h;
 	}
 
 	location ~ /.well-known {
 		allow all;
-		root /home/enewel3/webpack-react-boiler;
-  }
+		root /app
+	}
 
 	location / {
 		proxy_set_header X-Real-IP $remote_addr;

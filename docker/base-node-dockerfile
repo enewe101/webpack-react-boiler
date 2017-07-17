@@ -13,13 +13,13 @@ RUN ln -s `which nodejs` /usr/local/bin/node
 # Copy the code for the app into the container and build it.  First, only copy
 # the package.json and run `npm install`, that way changes to app code don't cause 
 # this step to repeat unless they alter dependencies
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-COPY package.json /usr/src/app
+RUN mkdir -p /app
+WORKDIR /app
+COPY package.json /app
 RUN npm install --quiet
 
 # Now copy all the rest of the files and build the app
-COPY . /usr/src/app
+COPY . /app
 
 # Configure nginx to serve the app
 RUN cp nginx-config /etc/nginx/sites-available/react-webpack-boiler

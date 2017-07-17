@@ -22,7 +22,7 @@ services:
       - node-base
     image: 'node:dev-1'
     volumes:
-      - ..:/usr/src/app
+      - ..:/app
 
   mongodb:
     environment:
