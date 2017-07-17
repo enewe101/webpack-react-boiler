@@ -19,6 +19,7 @@ source .env
 if [ -n "$1" ]; then
 	if [ "$1" = "--force-recreate" ]; then
 		docker-compose -p mern -f docker/docker-compose-development.yml down
+		docker volume prune 
 	fi
 fi
 docker-compose -p mern -f docker/docker-compose-development.yml up "$@"

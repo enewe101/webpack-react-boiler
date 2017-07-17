@@ -7,7 +7,7 @@ usermod -aG sudo $HOST_USER
 # Install docker
 # Remove any old version
 echo installing docker...
-apt-get remove docker docker-engine docker.io > /dev/null
+apt-get remove docker docker-engine docker.io &> /dev/null
 apt-get update > /dev/null
 apt-get install -y\
     apt-transport-https \
