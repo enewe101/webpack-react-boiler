@@ -5,14 +5,14 @@ server {
 	server_name 138.197.152.84;
 
 	location ~ /static {
-		root /app
+		root /app;
 		access_log off;
 		expires 24h;
 	}
 
 	location ~ /.well-known {
 		allow all;
-		root /app
+		root /app;
 	}
 
 	location / {

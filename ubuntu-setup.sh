@@ -1,6 +1,6 @@
 # Create a non-root user to run the app
 echo creating non-root user called $HOST_USER
-adduser --disabled-password --gecos '' $HOST_USER
+adduser --disabled-password --create-home --gecos '' $HOST_USER
 echo $HOST_USER:$HOST_USER_PASS | chpasswd
 usermod -aG sudo $HOST_USER
 
