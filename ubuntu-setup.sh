@@ -12,12 +12,12 @@ useradd --create-home $HOST_USER
 echo $HOST_USER:$HOST_USER_PASS | chpasswd
 usermod -aG sudo $HOST_USER
 
-# If we're going to be running with SSL/TLS, copy certificate / key / group
-if [ ! -z $USE_SSL ] || [ $USE_SSL -ne 0 ]; then
-	mkdir /home/$HOST_USER/cert;
-	cp /etc/letsencrypt/live/example.com/* /home/$HOST/cert;
-	cp /etc/ssl/certs/dhparam.pem /home/$HOST/cert;
-fi
+## If we're going to be running with SSL/TLS, copy certificate / key / group
+#if [ ! -z $USE_SSL ] || [ $USE_SSL -ne 0 ]; then
+#	mkdir /home/$HOST_USER/cert;
+#	cp /etc/letsencrypt/live/example.com/* /home/$HOST/cert;
+#	cp /etc/ssl/certs/dhparam.pem /home/$HOST/cert;
+#fi
 
 # Install docker
 # Remove any old version
