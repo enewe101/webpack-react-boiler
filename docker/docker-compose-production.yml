@@ -11,6 +11,7 @@ services:
     environment:
       - APP_DB_USER
       - APP_DB_PASS
+      - HOST
     build:
       context: ../
       dockerfile: docker/prod-node-dockerfile

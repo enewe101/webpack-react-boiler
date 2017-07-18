@@ -8,5 +8,4 @@ ENV NODE_ENV production
 # Start the server under pm2 supervisor, restart reverse proxy, and wait
 CMD pm2 start ecosystem.config.json \
   && /etc/init.d/nginx restart \
-  && echo yo yo yo yo \
   && tail -f /dev/null
