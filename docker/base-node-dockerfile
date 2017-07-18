@@ -1,11 +1,10 @@
 FROM ubuntu
 MAINTAINER Edward Newell
 
-# Install dependencies
+# Install dependencies -- nodejs, nginx, pm2
 RUN apt-get update
-RUN apt-get -qq -y install nodejs npm nginx > /dev/null
+RUN apt-get -qq -y install nodejs npm nginx vim > /dev/null
 RUN npm install -g --silent pm2
-
 # Because of a name collision, the "node" command gets called "nodejs" on Ubuntu.  
 # Force it to be "node" so that npm commands work properly.
 RUN ln -s `which nodejs` /usr/local/bin/node
@@ -20,9 +19,16 @@ RUN npm install --quiet
 
 # Now copy all the rest of the files and build the app
 COPY . /app
+COPY ./cert /app/cert
 
-# Configure nginx to serve the app
-RUN cp nginx-config /etc/nginx/sites-available/react-webpack-boiler
+COPY /etc/letsencrypt/live/$HOST /app/cert
+COPY /etc/ssl/certs/dhparam.pem /app/cert/dhparam.pem
+
+# Configure nginx to serve the app.  Either with ssl forced, or not enabled
+RUN test -z $USE_SSL || test $USE_SSL -eq 0 && \
+    cp nginx-config-nossl /etc/nginx/sites-available/react-webpack-boiler;\
+RUN test ! -z $USE_SSL || test $USE_SSL -ne 0 && \
+    cp nginx-config /etc/nginx/sites-available/react-webpack-boiler;\
 RUN ln -s /etc/nginx/sites-available/react-webpack-boiler /etc/nginx/sites-enabled/
 RUN rm /etc/nginx/sites-enabled/default
 
@@ -33,3 +39,6 @@ EXPOSE 80 443
 # At container runtime, the reverse-proxy should be restarted, and the app
 # itself should be started.  This is carried out differently for production vs.
 # for development.
+
+
+

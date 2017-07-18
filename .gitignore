@@ -10,3 +10,4 @@ keys.txt
 .DS_Store
 dump
 prod.env
+cert

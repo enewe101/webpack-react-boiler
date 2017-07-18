@@ -16,6 +16,7 @@ services:
       dockerfile: docker/dev-node-dockerfile
     ports:
       - 80:80
+      - 443:443
     links:
       - mongodb
     depends_on:
