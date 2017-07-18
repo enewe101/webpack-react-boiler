@@ -2,19 +2,31 @@ version: '3'
 services:
 
   node-base:
+    environment:
+        - HOST
+        - USE_SSL
     build:
       context: ../
       dockerfile: docker/base-node-dockerfile
+      args:
+        - HOST
+        - USE_SSL
     image: 'node-base'
 
   node:
     environment:
       - APP_DB_USER
       - APP_DB_PASS
+      - USE_SSL
       - HOST
     build:
       context: ../
       dockerfile: docker/dev-node-dockerfile
+      args:
+        - APP_DB_USER
+        - APP_DB_PASS
+        - USE_SSL
+        - HOST
     ports:
       - 80:80
       - 443:443
@@ -33,6 +45,11 @@ services:
       - APP_DB_USER
       - APP_DB_PASS
     build:
+      args:
+        - MONGO_INITDB_ROOT_USERNAME
+        - MONGO_INITDB_ROOT_PASSWORD
+        - APP_DB_USER
+        - APP_DB_PASS
       context: ../
       dockerfile: docker/mongo-dockerfile
     ports:

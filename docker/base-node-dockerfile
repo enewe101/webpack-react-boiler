@@ -1,6 +1,9 @@
 FROM ubuntu
 MAINTAINER Edward Newell
 
+ARG USE_SSL
+ARG HOST
+
 # Install dependencies -- nodejs, nginx, pm2
 RUN apt-get update
 RUN apt-get -qq -y install nodejs npm nginx vim > /dev/null
