@@ -31,10 +31,10 @@ COPY . /app
 
 # Configure nginx to serve the app.  Either with ssl forced, or not enabled
 RUN test -z $USE_SSL || test $USE_SSL -eq 0 && \
-    cp nginx-config-nossl /etc/nginx/sites-available/react-webpack-boiler || true
+    cp nginx-config-nossl /etc/nginx/sites-available/$HOST || true
 RUN test ! -z $USE_SSL && test $USE_SSL -ne 0 && \
-    cp nginx-config /etc/nginx/sites-available/react-webpack-boiler || true
-RUN ln -s /etc/nginx/sites-available/react-webpack-boiler /etc/nginx/sites-enabled/
+    cp nginx-config /etc/nginx/sites-available/$HOST || true
+RUN ln -s /etc/nginx/sites-available/$HOST /etc/nginx/sites-enabled/
 RUN rm /etc/nginx/sites-enabled/default
 
 # Expose ports
