@@ -28,8 +28,6 @@ server {
 	add_header X-Content-Type-Options nosniff;
 
 	ssl_dhparam /app/cert/dhparam.pem;
-
-	include snippets/ssl-params.conf;
 	server_name aventamedia.com;
 
 	location ~ /static {
