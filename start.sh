@@ -21,7 +21,6 @@
 ARGS=""; IS_PROD=0
 for var in "$@"; do test "$var" != '--prod' && ARGS="$ARGS $var" || IS_PROD=1; done
 
-
 if [ $IS_PROD -eq 1 ]; then
    export NODE_ENV=production
    export APP_VOLUME_MAPPING=../dummy:/dummy
@@ -37,8 +36,6 @@ if [ "$NODE_ENV" = "development" ]; then
 else
     MISSED=0
     if [ -z "$PROJ_NAME" ]; then echo "Need to set PROJ_NAME." && MISSED=1; fi
-    if [ -z "$APP_VOLUME_PATH" ]; 
-        then echo "Need to set APP_VOLUME_PATH." && MISSED=1; fi
     if [ -z "$USE_SSL" ]; then echo "Need to set USE_SSL." && MISSED=1; fi
     if [ -z "$APP_DB_USER" ]; then echo "Need to set APP_DB_USER." && MISSED=1; fi
     if [ -z "$APP_DB_PASS" ]; then echo "Need to set APP_DB_PASS." && MISSED=1; fi
