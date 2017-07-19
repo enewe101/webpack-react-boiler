@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  node:
+    environment:
+      - APP_DB_USER
+      - APP_DB_PASS
+      - USE_SSL
+      - HOST
+    build:
+      context: ../
+      dockerfile: docker/node-dockerfile
+      args:
+        - APP_DB_USER
+        - APP_DB_PASS
+        - USE_SSL
+        - HOST
+    ports:
+      - 80:80
+      - 443:443
+    links:
+      - mongodb
+    image: 'node:1'
+    volumes:
+      - ${APP_VOLUME_PATH}:/app
+
+
+  mongodb:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - APP_DB_USER
+      - APP_DB_PASS
+    build:
+      args:
+        - MONGO_INITDB_ROOT_USERNAME
+        - MONGO_INITDB_ROOT_PASSWORD
+        - APP_DB_USER
+        - APP_DB_PASS
+      context: ../
+      dockerfile: docker/mongo-dockerfile
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/data/db
+      - ../mongo-entrypoint/:/docker-entrypoint-initdb.d/
+    image: 'mongodb:1'
+
+volumes:
+    mongodata:
