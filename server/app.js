@@ -106,7 +106,7 @@ mongoose.connect(mongo_connect_url);
 
 // Additional setup for dev server
 const webpack = require('webpack')
-const config = require('../webpack.config.js')
+const config = require('../config/webpack.config.js')
 const compiler = webpack(config)
 
 var webpackDevMiddleware = require("webpack-dev-middleware");
