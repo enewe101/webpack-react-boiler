@@ -46,7 +46,7 @@ services:
       - 27017:27017
     volumes:
       - mongodata:/data/db
-      - ../mongo-entrypoint/:/docker-entrypoint-initdb.d/
+      - ../bin/mongo-entrypoint/:/docker-entrypoint-initdb.d/
     image: 'mongodb:1'
 
 volumes:
