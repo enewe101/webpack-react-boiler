@@ -34,19 +34,24 @@ echo "Starting up $NODE_ENV environment"
 if [ "$NODE_ENV" = "development" ]; then
     source .env
 else
-    if [ -z "$APP_PATH" ]; then echo "Need to set APP_PATH."; fi
-    if [ -z "$USE_SSL" ]; then echo "Need to set USE_SSL."; fi
-    if [ -z "$APP_DB_USER" ]; then echo "Need to set APP_DB_USER."; fi
-    if [ -z "$APP_DB_PASS" ]; then echo "Need to set APP_DB_PASS."; fi
-    if [ -z "$HOST" ]; then echo "Need toset HOST."; fi
-    if [ -z "$HOST_USER" ]; then echo "Need to set HOST_USER."; fi
-    if [ -z "$HOST_USER_PASS" ]; then echo "Need to set HOST_USER_PASS."; fi
+    MISSED=0
+    if [ -z "$PROJ_NAME" ]; then echo "Need to set PROJ_NAME." && MISSED=1; fi
+    if [ -z "$APP_VOLUME_PATH" ]; 
+        then echo "Need to set APP_VOLUME_PATH." && MISSED=1; fi
+    if [ -z "$USE_SSL" ]; then echo "Need to set USE_SSL." && MISSED=1; fi
+    if [ -z "$APP_DB_USER" ]; then echo "Need to set APP_DB_USER." && MISSED=1; fi
+    if [ -z "$APP_DB_PASS" ]; then echo "Need to set APP_DB_PASS." && MISSED=1; fi
+    if [ -z "$HOST" ]; then echo "Need to set HOST." && MISSED=1; fi
+    if [ -z "$HOST_USER" ]; then echo "Need to set HOST_USER." && MISSED=1; fi
+    if [ -z "$HOST_USER_PASS" ]; 
+        then echo "Need to set HOST_USER_PASS." && MISSED=1; fi
     if [ -z "$MONGO_INITDB_ROOT_USERNAME" ]; then 
-        echo "Need to set MONGO_INITDB_ROOT_USERNAME.";
+        echo "Need to set MONGO_INITDB_ROOT_USERNAME." && MISSED=1;
     fi
     if [ -z "$MONGO_INITDB_ROOT_PASSWORD" ]; then 
-        echo "Need to set MONGO_INITDB_ROOT_PASSWORD.";
+        echo "Need to set MONGO_INITDB_ROOT_PASSWORD." && MISSED=1;
     fi
+    if [ $MISSED -eq 1 ]; then exit 1; fi
 fi
 
 # Notify whether SSL being used; if yes, ensure certificate-related files exist.

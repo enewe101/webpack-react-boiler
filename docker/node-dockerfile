@@ -1,6 +1,7 @@
 FROM ubuntu
 MAINTAINER Edward Newell
 
+ARG NODE_ENV
 ARG USE_SSL
 ARG HOST
 
