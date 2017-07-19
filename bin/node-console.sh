@@ -7,7 +7,8 @@
 #
 #   To stop the node app, hit Ctrl-C to get out of realtime logging (you'll
 #   still be in the node container though), and run ``pm2 kill``.  You can
-#   restart node under pm2 by running ``pm2 start ecosystem.config.json``, or
-#   run the node app without pm2, by running ``node server/app.js``.
+#   restart node under pm2 by running ``pm2 start
+#   config/ecosystem.config.json``, or run the node app without pm2, by running
+#   ``node server/app.js``.
 #
 docker exec -it mern_node_1 bash -c 'bash --init-file <(echo "pm2 log")'
