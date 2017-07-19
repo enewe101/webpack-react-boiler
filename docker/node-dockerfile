@@ -6,18 +6,18 @@ ARG USE_SSL
 ARG HOST
 
 # Install dependencies -- nodejs, nginx, pm2
-RUN apt-get update
+RUN apt-get update > /dev/null
 RUN apt-get -qq -y install nodejs npm nginx vim > /dev/null
-RUN npm install -g --silent pm2
+RUN npm install -g --silent pm2 > /dev/null
 # Because of a name collision, the "node" command gets called "nodejs" on Ubuntu.  
 # Force it to be "node" so that npm commands work properly.
 RUN ln -s `which nodejs` /usr/local/bin/node
 
 # Install ssl certificate management software
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:certbot/certbot		
-RUN apt-get update
-RUN apt-get install -y certbot
+RUN apt-get install -y software-properties-common > /dev/null
+RUN add-apt-repository -y ppa:certbot/certbot > /dev/null
+RUN apt-get update > /dev/null
+RUN apt-get install -y certbot > /dev/null
 
 # Copy the code for the app into the container and build it.  First, only copy
 # the package.json and run `npm install`, that way changes to app code don't cause 
@@ -46,6 +46,7 @@ RUN test "$NODE_ENV" = production && npm run prod-build || true
 
 # Start the server under pm2 supervisor, restart reverse proxy, and wait
 CMD /etc/init.d/nginx restart\
+  && echo ls && ls .. \
   && (test "$NODE_ENV" = development && npm install && npm run dev-build || true)\
   && pm2 start ecosystem.config.json\
   && tail -f /dev/null

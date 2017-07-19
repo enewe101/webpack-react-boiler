@@ -24,7 +24,8 @@ services:
       - mongodb
     image: 'node:1'
     volumes:
-      - ${APP_VOLUME_PATH}:/app
+      #- ..:/app
+      - ${APP_VOLUME_MAPPING}
 
 
   mongodb:

@@ -24,9 +24,10 @@ for var in "$@"; do test "$var" != '--prod' && ARGS="$ARGS $var" || IS_PROD=1; d
 
 if [ $IS_PROD -eq 1 ]; then
    export NODE_ENV=production
-   export APP_VOLUME_PATH=../dummy
+   export APP_VOLUME_MAPPING=../dummy:/dummy
 else
    export NODE_ENV=development
+   export APP_VOLUME_MAPPING=..:/app
 fi
 echo "Starting up $NODE_ENV environment"
 
@@ -73,5 +74,4 @@ fi
 for var in "$ARGS"; do test "$var" = "--force-recreate" && ./docker-rm; done
 
 # Now call docker-compose, and pass through all the arguments
-echo docker-compose -p mern -f docker/docker-compose.yml up "$ARGS"
 docker-compose -p mern -f docker/docker-compose.yml up $ARGS
