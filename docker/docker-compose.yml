@@ -5,6 +5,7 @@ services:
     environment:
       - APP_DB_USER
       - APP_DB_PASS
+      - NODE_ENV
       - USE_SSL
       - HOST
     build:
@@ -13,6 +14,7 @@ services:
       args:
         - APP_DB_USER
         - APP_DB_PASS
+        - NODE_ENV
         - USE_SSL
         - HOST
     ports:
