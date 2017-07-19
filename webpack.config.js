@@ -10,13 +10,13 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 
 module.exports = {
-  context: path.join(__dirname, 'client-src'),
+  context: path.join(__dirname, './client-src'),
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
     './index.js'
   ],
   output: {
-    path: path.join(__dirname, 'client-build'),
+    path: path.join(__dirname, './client-build'),
     filename: 'bundle.js',
     publicPath: '/'
   },
@@ -25,7 +25,7 @@ module.exports = {
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        include: path.join(__dirname, 'client-src'),
+        include: path.join(__dirname, './client-src'),
         exclude: /node_modules/,
         query: {
           presets: ['es2015', 'react']

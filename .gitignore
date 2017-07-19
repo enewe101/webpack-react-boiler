@@ -2,12 +2,12 @@
 *.swo
 ~*
 *~
+.DS_Store
+.env.gpg
 npm-debug.log
 node_modules
 client-build
 static
-keys.txt
-.DS_Store
 dump
-prod.env
 cert
+log

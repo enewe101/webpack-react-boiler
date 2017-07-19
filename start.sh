@@ -20,6 +20,7 @@
 # Figure out if the --prod arugment was set (remove it from args list if so)
 ARGS=""; IS_PROD=0
 for var in "$@"; do test "$var" != '--prod' && ARGS="$ARGS $var" || IS_PROD=1; done
+ARGS=$(echo "$ARGS" | xargs)    # Trim whatespace around variables
 
 if [ $IS_PROD -eq 1 ]; then
    export NODE_ENV=production
@@ -68,7 +69,13 @@ fi
 
 # Figure out if --force-recreate was included as an arg.  If so, remove all
 # images, volumes, and containers
-for var in "$ARGS"; do test "$var" = "--force-recreate" && ./docker-rm; done
+echo "about to test if force-recreate" && echo "$ARGS"
+for var in "$ARGS"; do 
+    if [ "$var" = "--force-recreate" ]; then
+        echo "removing images, volumes, and containers"
+        bin/docker-rm
+    fi
+done
 
 # Now call docker-compose, and pass through all the arguments
 docker-compose -p mern -f docker/docker-compose.yml up $ARGS

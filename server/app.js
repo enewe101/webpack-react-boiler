@@ -41,13 +41,13 @@ app.use(function(req, res, next) {
   next();
 });
 
-//app.use('/', publicPath);
-//app.get('/', function (req, res) { res.sendFile(indexPath) });
-//app.get('/data', (req, res) => {
-//  res.send("take what you GET");
-//});
-//app.post('/data', function(req, res){
-//  res.send(`get what you POSTed: '${req.body.name}'`)});
+app.use('/', publicPath);
+app.get('/', function (req, res) { res.sendFile(indexPath) });
+app.get('/data', (req, res) => {
+  res.send("take what you GET");
+});
+app.post('/data', function(req, res){
+  res.send(`get what you POSTed: '${req.body.name}'`)});
 
 
 app.get('/sessions/connect', function(req, res){
@@ -95,9 +95,9 @@ app.get('/home', function(req, res){
     });
 });
 
-app.get('*', function(req, res){
-    res.redirect('/home');
-});
+//app.get('*', function(req, res){
+//    res.redirect('/home');
+//});
 
 const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
 const mongo_connect_url = 'mongodb://' + auth_string + '@mongodb:27017/react';
@@ -106,7 +106,7 @@ mongoose.connect(mongo_connect_url);
 
 // Additional setup for dev server
 const webpack = require('webpack')
-const config = require('../config/webpack.config.js')
+const config = require('../webpack.config.js')
 const compiler = webpack(config)
 
 var webpackDevMiddleware = require("webpack-dev-middleware");

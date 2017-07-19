@@ -10,9 +10,9 @@
   "private": false,
   "scripts": {
     "dev-start": "NODE_ENV=develpment node server/app.js",
-    "dev-build": "webpack --config ./config/webpack.config.js --progress --colors",
+    "dev-build": "webpack --config ./webpack.config.js --progress --colors",
     "prod-start": "NODE_ENV=production node server/app.js",
-    "prod-build": "webpack --config ./config/webpack.deployment.config.js --progress --colors"
+    "prod-build": "webpack --config ./webpack.deployment.config.js --progress --colors"
   },
   "dependencies": {
     "babel-cli": "^6.6.5",
