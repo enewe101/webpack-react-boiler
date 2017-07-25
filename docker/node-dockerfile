@@ -46,7 +46,6 @@ RUN test "$NODE_ENV" = production && npm run prod-build || true
 
 # Start the server under pm2 supervisor, restart reverse proxy, and wait
 CMD /etc/init.d/nginx restart\
-  && echo ls && ls .. \
   && (test "$NODE_ENV" = development && npm install && npm run dev-build || true)\
   && pm2 start config/ecosystem.config.json\
   && tail -f /dev/null

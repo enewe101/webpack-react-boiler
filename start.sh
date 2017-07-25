@@ -69,7 +69,6 @@ fi
 
 # Figure out if --force-recreate was included as an arg.  If so, remove all
 # images, volumes, and containers
-echo "about to test if force-recreate" && echo "$ARGS"
 for var in "$ARGS"; do 
     if [ "$var" = "--force-recreate" ]; then
         echo "removing images, volumes, and containers"
