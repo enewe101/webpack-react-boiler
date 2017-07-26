@@ -24,10 +24,10 @@ const consumer = new oauth.OAuth(
   _twitterConsumerKey,
   _twitterConsumerSecret,
   "1.0A",
-  "http://"+ip+":"+port.toString()+"/sessions/callback",
+  "http://"+ip+"/sessions/callback",
   "HMAC-SHA1"
 );
-
+   
 const app = express();
 const indexPath = path.join(__dirname, '../client-build/index.html');
 const publicPath = express.static(path.join(__dirname, '../client-build'));
@@ -41,13 +41,13 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/', publicPath);
-app.get('/', function (req, res) { res.sendFile(indexPath) });
-app.get('/data', (req, res) => {
-  res.send("take what you GET");
-});
-app.post('/data', function(req, res){
-  res.send(`get what you POSTed: '${req.body.name}'`)});
+//app.use('/', publicPath);
+//app.get('/', function (req, res) { res.sendFile(indexPath) });
+//app.get('/data', (req, res) => {
+//  res.send("take what you GET");
+//});
+//app.post('/data', function(req, res){
+//  res.send(`get what you POSTed: '${req.body.name}'`)});
 
 
 app.get('/sessions/connect', function(req, res){
@@ -73,11 +73,16 @@ app.get('/sessions/callback', function(req, res){
   console.log(">>"+req.query.oauth_verifier);
   consumer.getOAuthAccessToken(req.session.oauthRequestToken, req.session.oauthRequestTokenSecret, req.query.oauth_verifier, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
     if (error) {
-      res.send("Error getting OAuth access token : " + inspect(error) + "[" + oauthAccessToken + "]" + "[" + oauthAccessTokenSecret + "]" + "[" + inspect(result) + "]", 500);
+        res.status(500).send(
+            "Error getting OAuth access token : " + inspect(error) 
+            + "[" + oauthAccessToken + "]" 
+            + "[" + oauthAccessTokenSecret + "]"
+        );
     } else {
       req.session.oauthAccessToken = oauthAccessToken;
       req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-
+      console.log("oauthAccessToken: " + oauthAccessToken)
+      console.log("oauthAccessTokenSecret: " + oauthAccessTokenSecret)
       res.redirect('/home');
     }
   });
@@ -91,13 +96,15 @@ app.get('/home', function(req, res){
       } else {
         var parsedData = JSON.parse(data);
         res.send('You are signed in: ' + inspect(parsedData.screen_name));
+	console.log('access token: ' + req.session.oauthAccessToken)
+	console.log('access token secret: ' + req.session.oauthAccessTokenSecret)
       }
     });
 });
 
-//app.get('*', function(req, res){
-//    res.redirect('/home');
-//});
+app.get('*', function(req, res){
+    res.redirect('/home');
+});
 
 const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
 const mongo_connect_url = 'mongodb://' + auth_string + '@mongodb:27017/react';
