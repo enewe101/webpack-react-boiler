@@ -4,6 +4,7 @@
 *~
 .DS_Store
 .env.gpg
+.keys
 npm-debug.log
 node_modules
 client-build

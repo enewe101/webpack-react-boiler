@@ -12,19 +12,14 @@ var session = require('express-session');
 var inspect = require('util-inspect');
 var oauth = require('oauth');
 
-
 // Basic setup for the server
-const ip = '159.203.30.146';
-const _twitterConsumerKey = "ADGLPx9iJUL6oNl7RyozTgaZG";
-const _twitterConsumerSecret = "ZwcXeDJwNDWsLWKvw6wxQFVeFRxkVMzcZ7rV6QzugPnSWTSbdQ";
-
 const consumer = new oauth.OAuth(
   "https://twitter.com/oauth/request_token",
   "https://twitter.com/oauth/access_token",
-  _twitterConsumerKey,
-  _twitterConsumerSecret,
+  process.env.TWITTER_CONSUMER_KEY,
+  process.env.TWITTER_CONSUMER_SECRET,
   "1.0A",
-  "http://"+ip+":"+port.toString()+"/sessions/callback",
+  "http://"+process.env.HOST+"/sessions/callback",
   "HMAC-SHA1"
 );
 
@@ -40,14 +35,6 @@ app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
-
-app.use('/', publicPath);
-app.get('/', function (req, res) { res.sendFile(indexPath) });
-app.get('/data', (req, res) => {
-  res.send("take what you GET");
-});
-app.post('/data', function(req, res){
-  res.send(`get what you POSTed: '${req.body.name}'`)});
 
 
 app.get('/sessions/connect', function(req, res){
@@ -73,11 +60,16 @@ app.get('/sessions/callback', function(req, res){
   console.log(">>"+req.query.oauth_verifier);
   consumer.getOAuthAccessToken(req.session.oauthRequestToken, req.session.oauthRequestTokenSecret, req.query.oauth_verifier, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
     if (error) {
-      res.send("Error getting OAuth access token : " + inspect(error) + "[" + oauthAccessToken + "]" + "[" + oauthAccessTokenSecret + "]" + "[" + inspect(result) + "]", 500);
+        res.status(500).send(
+            "Error getting OAuth access token : " + inspect(error) 
+            + "[" + oauthAccessToken + "]" 
+            + "[" + oauthAccessTokenSecret + "]"
+        );
     } else {
       req.session.oauthAccessToken = oauthAccessToken;
       req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
-
+      console.log("oauthAccessToken: " + oauthAccessToken)
+      console.log("oauthAccessTokenSecret: " + oauthAccessTokenSecret)
       res.redirect('/home');
     }
   });
@@ -91,13 +83,25 @@ app.get('/home', function(req, res){
       } else {
         var parsedData = JSON.parse(data);
         res.send('You are signed in: ' + inspect(parsedData.screen_name));
+	console.log('access token: ' + req.session.oauthAccessToken)
+	console.log('access token secret: ' + req.session.oauthAccessTokenSecret)
       }
     });
 });
 
-//app.get('*', function(req, res){
-//    res.redirect('/home');
+app.get('*', function(req, res){
+    res.redirect('/home');
+});
+
+//app.use('/', publicPath);
+//app.get('/', function (req, res) { res.sendFile(indexPath) });
+//app.get('/data', (req, res) => {
+//  res.send("take what you GET");
 //});
+//app.post('/data', function(req, res){
+//  res.send(`get what you POSTed: '${req.body.name}'`)});
+
+
 
 const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
 const mongo_connect_url = 'mongodb://' + auth_string + '@mongodb:27017/react';
