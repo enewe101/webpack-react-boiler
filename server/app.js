@@ -12,7 +12,6 @@ var session = require('express-session');
 var inspect = require('util-inspect');
 var oauth = require('oauth');
 
-
 // Basic setup for the server
 const consumer = new oauth.OAuth(
   "https://twitter.com/oauth/request_token",
@@ -23,7 +22,7 @@ const consumer = new oauth.OAuth(
   "http://"+process.env.HOST+"/sessions/callback",
   "HMAC-SHA1"
 );
-   
+
 const app = express();
 const indexPath = path.join(__dirname, '../client-build/index.html');
 const publicPath = express.static(path.join(__dirname, '../client-build'));
@@ -36,14 +35,6 @@ app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
-
-//app.use('/', publicPath);
-//app.get('/', function (req, res) { res.sendFile(indexPath) });
-//app.get('/data', (req, res) => {
-//  res.send("take what you GET");
-//});
-//app.post('/data', function(req, res){
-//  res.send(`get what you POSTed: '${req.body.name}'`)});
 
 
 app.get('/sessions/connect', function(req, res){
@@ -101,6 +92,16 @@ app.get('/home', function(req, res){
 app.get('*', function(req, res){
     res.redirect('/home');
 });
+
+//app.use('/', publicPath);
+//app.get('/', function (req, res) { res.sendFile(indexPath) });
+//app.get('/data', (req, res) => {
+//  res.send("take what you GET");
+//});
+//app.post('/data', function(req, res){
+//  res.send(`get what you POSTed: '${req.body.name}'`)});
+
+
 
 const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
 const mongo_connect_url = 'mongodb://' + auth_string + '@mongodb:27017/react';
