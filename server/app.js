@@ -14,17 +14,13 @@ var oauth = require('oauth');
 
 
 // Basic setup for the server
-const ip = '159.203.30.146';
-const _twitterConsumerKey = "ADGLPx9iJUL6oNl7RyozTgaZG";
-const _twitterConsumerSecret = "ZwcXeDJwNDWsLWKvw6wxQFVeFRxkVMzcZ7rV6QzugPnSWTSbdQ";
-
 const consumer = new oauth.OAuth(
   "https://twitter.com/oauth/request_token",
   "https://twitter.com/oauth/access_token",
-  _twitterConsumerKey,
-  _twitterConsumerSecret,
+  process.env.TWITTER_CONSUMER_KEY,
+  process.env.TWITTER_CONSUMER_SECRET,
   "1.0A",
-  "http://"+ip+"/sessions/callback",
+  "http://"+process.env.HOST+"/sessions/callback",
   "HMAC-SHA1"
 );
    

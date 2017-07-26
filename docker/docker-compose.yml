@@ -8,6 +8,10 @@ services:
       - NODE_ENV
       - USE_SSL
       - HOST
+      - TWITTER_CONSUMER_KEY
+      - TWITTER_CONSUMER_SECRET
+      - TWITTER_ACCESS_TOKEN
+      - TWITTER_ACCESS_TOKEN_SECRET
     build:
       context: ../
       dockerfile: docker/node-dockerfile
@@ -17,6 +21,10 @@ services:
         - NODE_ENV
         - USE_SSL
         - HOST
+        - TWITTER_CONSUMER_KEY
+        - TWITTER_CONSUMER_SECRET
+        - TWITTER_ACCESS_TOKEN
+        - TWITTER_ACCESS_TOKEN_SECRET
     ports:
       - 80:80
       - 443:443
