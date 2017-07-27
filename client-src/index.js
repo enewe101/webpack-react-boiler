@@ -18,15 +18,14 @@ class TestComponent extends React.Component {
 
 export default App;
 
-
 const renderApp = () => {
   ReactDOM.render(
 	<BrowserRouter>
 	  <div>
 	    <Route exact path='/app/logged-in' component={App} />
 	    <Route exact path='/app/login' component={TestComponent} />
-      </div>
-    </BrowserRouter>,
+    </div>
+  </BrowserRouter>,
 	document.getElementById('root'));
 };
 

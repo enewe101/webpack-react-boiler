@@ -69,6 +69,10 @@ class App extends React.Component {
     this.setState({newTodoText:e.target.value});
   }
 
+  fbLogin() {
+		FB.login();
+  }
+
   render() {
 
       const listItems = this.state.todos.map(item => {
@@ -85,9 +89,10 @@ class App extends React.Component {
           <button onClick={this.addItem}>Add</button>
 
           <a href="/auth/twitter-request">
-          <img src="/static/sign-in-with-twitter-gray.png" />
+            <img src="/static/sign-in-with-twitter-gray.png" />
           </a>
 
+					<button onClick={this.fbLogin}>login fb</button>
         </div>
       )
   }
