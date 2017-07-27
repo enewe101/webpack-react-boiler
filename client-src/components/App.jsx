@@ -77,12 +77,16 @@ class App extends React.Component {
 
       return (
         <div>
-          <div>yo yo yo</div>
+          <div>yo what</div>
           <div>{listItems}</div>
 
           <input type="text" value={this.state.newTodoText}
             onChange={this.handleNewTodoTextChange} />
           <button onClick={this.addItem}>Add</button>
+
+          <a href="/auth/twitter-request">
+          <img src="/static/sign-in-with-twitter-gray.png" />
+          </a>
 
         </div>
       )
