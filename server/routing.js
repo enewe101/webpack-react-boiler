@@ -1,5 +1,6 @@
 "use strict";
 const oauth = require('oauth');
+const request = require('request');
 
 // We'll need a few helpers and resources in the route handlers
 var consumer = setup_twitter_oauth();
@@ -8,6 +9,32 @@ function provide_routing(app) {
 	app.get('/auth/twitter-request', twitter_request_handler);
 	app.get('/auth/twitter-return', twitter_return_handler);
 	app.get('/app/*', serve_client_app);
+  app.post('/auth/FB-request-long-token', relayLongFBTokenRequest);
+}
+
+function relayLongFBTokenRequest(req, res) {
+  console.log('req.body');
+  console.log(req.body);
+
+  request.get({
+      'url':'https://graph.facebook.com/oauth/access_token',
+      'qs': {
+        'grant_type': 'fb_exchange_token',
+        'client_id': '157675138124785', //process.env.FACEBOOK_APP_ID,
+        'client_secret': '96c3134461d04aeaf45344069875ce5f', //process.env.FACEBOOK_APP_SECRET,
+        'fb_exchange_token': req.body.token
+      }
+    },
+    function(error, response, body) {
+      if(error) {
+        console.log(error);
+        console.log(error);
+      } else { 
+        console.log(body);
+        res.json(body);
+      }
+    }
+  ); 
 }
 
 function setup_twitter_oauth() {

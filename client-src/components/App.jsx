@@ -2,7 +2,7 @@ import _ from 'underscore';
 import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SERVICES from  '../services';
+import facebookUserStatusService from '../services/facebookUserStatusService';
 
 // Import sub-components
 class App extends React.Component {
@@ -21,7 +21,7 @@ class App extends React.Component {
     this.jsonPost = this.jsonPost.bind(this);
     this.handleNewTodoTextChange = this.handleNewTodoTextChange.bind(this);
     this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
-    SERVICES['getUserStatus'](this.handleUserStatusChange);
+    facebookUserStatusService.getUserStatus(this.handleUserStatusChange);
   }
 
   handleUserStatusChange(response) {
@@ -81,7 +81,7 @@ class App extends React.Component {
 
   fbLogin() {
 		FB.login((response) => {
-      SERVICES.extend_token(response);
+      facebookUserStatusService.extend_token(response);
     })
   }
 

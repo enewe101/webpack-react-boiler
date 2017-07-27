@@ -54,8 +54,9 @@ function setup_template_parsing(app, template_extension, views_dir) {
 }
 
 function setup_most_middleware(app) {
-	app.use(bodyParser.urlencoded({extended: true}))
+
 	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({extended: true}))
 	app.use(logger({ path: "log/express.log"}));
 	app.use(cookieParser());
 	app.use(session({

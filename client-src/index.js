@@ -2,10 +2,7 @@ require('es6-promise').polyfill();
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
-
 import App from './components/App.jsx';
-
-
 import _ from 'underscore';
 import path from 'path';
 
