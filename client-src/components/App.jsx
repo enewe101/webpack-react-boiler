@@ -2,6 +2,7 @@ import _ from 'underscore';
 import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SERVICES from  '../services';
 
 // Import sub-components
 class App extends React.Component {
@@ -12,12 +13,21 @@ class App extends React.Component {
       todos: [['thing one', true], ['thing two', false]],
       getResponse: '',
       postResponse: '',
-      newTodoText: ''
+      newTodoText: '',
+      loggedIn: false
     }
     this.get = this.get.bind(this);
     this.addItem = this.addItem.bind(this);
     this.jsonPost = this.jsonPost.bind(this);
     this.handleNewTodoTextChange = this.handleNewTodoTextChange.bind(this);
+    this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
+    SERVICES['getUserStatus'](this.handleUserStatusChange);
+  }
+
+  handleUserStatusChange(response) {
+    console.log('receiving user status change:');
+    console.log(response);
+    //this.setState({loggedIn:false})
   }
 
   get() {
@@ -70,29 +80,23 @@ class App extends React.Component {
   }
 
   fbLogin() {
-		FB.login();
+		FB.login((response) => {
+      SERVICES.extend_token(response);
+    })
   }
 
   render() {
 
-      const listItems = this.state.todos.map(item => {
-        <li><input type="checkbox" checked="true" />{item[0]}</li>
-      });
-
       return (
         <div>
           <div>yo what</div>
-          <div>{listItems}</div>
-
-          <input type="text" value={this.state.newTodoText}
-            onChange={this.handleNewTodoTextChange} />
-          <button onClick={this.addItem}>Add</button>
 
           <a href="/auth/twitter-request">
             <img src="/static/sign-in-with-twitter-gray.png" />
           </a>
 
 					<button onClick={this.fbLogin}>login fb</button>
+
         </div>
       )
   }
