@@ -14,20 +14,21 @@ class App extends React.Component {
       getResponse: '',
       postResponse: '',
       newTodoText: '',
-      loggedIn: false
+      fbUser: {'authenticated':false}
     }
     this.get = this.get.bind(this);
     this.addItem = this.addItem.bind(this);
     this.jsonPost = this.jsonPost.bind(this);
     this.handleNewTodoTextChange = this.handleNewTodoTextChange.bind(this);
     this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
+    this.fbLogin = this.fbLogin.bind(this);
     facebookUserStatusService.getUserStatus(this.handleUserStatusChange);
   }
 
   handleUserStatusChange(response) {
     console.log('receiving user status change:');
     console.log(response);
-    //this.setState({loggedIn:false})
+    this.setState({fbUser:response});
   }
 
   get() {
@@ -80,25 +81,52 @@ class App extends React.Component {
   }
 
   fbLogin() {
-		FB.login((response) => {
-      facebookUserStatusService.extend_token(response);
-    })
+    facebookUserStatusService.login(this.handleUserStatusChange);
+  }
+
+  twitterReauth() {
+    window.location.href = "/auth/twitter-reauth";
   }
 
   render() {
 
-      return (
-        <div>
-          <div>yo what</div>
 
-          <a href="/auth/twitter-request">
-            <img src="/static/sign-in-with-twitter-gray.png" />
-          </a>
+    let fbLoginStatus;
+    if(this.state.fbUser.authenticated) {
+      fbLoginStatus = 'Logged in: ' + this.state.fbUser.userId;
+    } else {
+      fbLoginStatus = 'Not logged in';
+    }
 
-					<button onClick={this.fbLogin}>login fb</button>
+    return (
+      <div>
 
-        </div>
-      )
+        <h1>Twitter Auth</h1>
+        <ul>
+          <li>
+            <a href="/auth/twitter-auth">
+              <img src="/static/sign-in-with-twitter-gray.png" />
+            </a>
+          </li>
+          <li>
+            <button onClick={this.twitterReauth}>
+              associate another twitter account
+            </button>
+          </li>
+        </ul>
+
+        <h1>Facebook Auth</h1>
+        <ul>
+          <li>
+            {fbLoginStatus}
+          </li>
+          <li>
+            <button onClick={this.fbLogin}>login fb</button>
+          </li>
+        </ul>
+
+      </div>
+    )
   }
 }
 

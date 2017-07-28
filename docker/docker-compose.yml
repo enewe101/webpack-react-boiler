@@ -12,6 +12,8 @@ services:
       - TWITTER_CONSUMER_SECRET
       - TWITTER_ACCESS_TOKEN
       - TWITTER_ACCESS_TOKEN_SECRET
+      - FACEBOOK_APP_ID
+      - FACEBOOK_APP_SECRET
     build:
       context: ../
       dockerfile: docker/node-dockerfile
@@ -25,6 +27,8 @@ services:
         - TWITTER_CONSUMER_SECRET
         - TWITTER_ACCESS_TOKEN
         - TWITTER_ACCESS_TOKEN_SECRET
+        - FACEBOOK_APP_ID
+        - FACEBOOK_APP_SECRET
     ports:
       - 80:80
       - 443:443
