@@ -41,10 +41,18 @@ class FacebookUserStatusService {
 
   }
 
+  // Request to be notified of the user status (as soon as it is available)
+  // via callback.  If `observe` is true, then callback will be called whenever
+  // this._userStatus changes.
+  getUserStatus(callback, awaitLongToken, observe) {
+    this._stageCallback(callback, awaitLongToken, observe);
+    this._satisfyRequesters(this._longTokenRequesters, '_doneWaitingLongToken');
+    this._satisfyRequesters(
+      this._userStatusRequesters, '_doneWaitingUserStatus');
+  }
 
-  // Public method to open a dialogue letting the user authenticate with
-  // facebook.  The user's access token will become available
-  login(callback, awaitLongToken, observe) {
+
+  _stageCallback(callback, awaitLongToken, observe) {
 
     // By default, assume the caller wants to wait for the long-lived token.
     if(typeof awaitLongToken === 'undefined') {
@@ -59,10 +67,6 @@ class FacebookUserStatusService {
       callback = null
     }
 
-    // Flag that we will be waiting for updated userStatus and long token.
-    this._doneWaitingUserStatus = false;
-    this._doneWaitingLongToken = false;
-
     // Register the caller's callback
     if(callback != null) {
       if(awaitLongToken) {
@@ -71,41 +75,70 @@ class FacebookUserStatusService {
         this._userStatusRequesters.push([callback, observe])
       }
     }
+  }
 
-    // Call the login, and upon satisfying it, _updateUserStatus, which will
-    // supply the new userStatus to the caller's callback.
+  // Public method to logout.  Does not revoke tokens.
+  logout(callback, awaitLongToken, observe) {
+    this._stageCallback(callback, awaitLongToken, observe);
+    // Flag that we will be waiting for updated userStatus and long token.
+    this._doneWaitingUserStatus = false;
+    this._doneWaitingLongToken = false;
+    FB.logout(this._updateUserStatus)
+  }
+
+
+  // Public method to open a dialogue letting the user authenticate with
+  // facebook.  The user's access token will become available
+  login(callback, awaitLongToken, observe) {
+    this._stageCallback(callback, awaitLongToken, observe);
+    // Flag that we will be waiting for updated userStatus and long token.
+    this._doneWaitingUserStatus = false;
+    this._doneWaitingLongToken = false;
     FB.login(this._updateUserStatus)
   }
 
+  // Public method to open a dialogue letting the user authenticate with
+  // facebook.  The user's access token will become available
+  revoke(callback, observe) {
 
-  // Request to be notified of the user status (as soon as it is available)
-  // via callback.  If `observe` is true, then callback will be called whenever
-  // this._userStatus changes.
-  getUserStatus(callback, awaitLongToken, observe) {
+    // Logout, but don't forget user credential yet, we still need to revoke
+    FB.logout()
 
-    // By default, assume the caller wants to wait for the long-lived token.
-    if(typeof awaitLongToken === 'undefined') {
-      awaitLongToken = true;
-    }
+    this._doneWaitingUserStatus = false;
+    this._doneWaitingLongToken = false;
 
-    // By default, assume caller wants one-time response, not a subscription
-    observe = Boolean(observe);
+    let that = this;
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
 
-    if(awaitLongToken) {
-      this._longTokenRequesters.push([callback, observe]);
-      this._satisfyRequesters(
-        this._longTokenRequesters, '_doneWaitingLongToken');
-    } else {
-      this._userStatusRequesters.push([callback, observe]);
-      this._satisfyRequesters(
-        this._userStatusRequesters, '_doneWaitingUserStatus');
-    }
+    fetch('/auth/FB-revoke', {
+      method: 'post',
+      headers: headers, 
+      body: JSON.stringify({
+        userId: this._userStatus.userId,
+        access_token: this._userStatus.longAccessToken
+      }),
+
+    }).then(function(response) {
+      return response.json();
+
+    }).then(function(json) {
+      var data = JSON.parse(json);
+      console.log('revoke-repsonse');
+      console.log(data);
+      that._userStatus = {'authenticated': false};
+      that._userStatusRequesters.push([callback, observe])
+      that._doneWaitingUserStatus = true;
+      that._doneWaitingLongToken = true;
+      that._satisfyRequesters(
+        that._userStatusRequesters, '_doneWaitingUserStatus');
+      that._satisfyRequesters(
+        that._longTokenRequesters, '_doneWaitingLongToken');
+    })
   }
 
-  getLongLivedToken(callback, observe) {
-    observe = Boolean(observe);
-    this._longTokenRequesters.push([callback, observe]);
-  }
 
   _satisfyRequesters(requesters, isReadyKey) {
 
@@ -162,6 +195,9 @@ class FacebookUserStatusService {
   }
 
   _updateUserStatus(response){
+
+    console.log('updating user status:');
+    console.log(response);
 
     // Handle the case where the user is logged in.
     if(response['status'] == 'connected') {

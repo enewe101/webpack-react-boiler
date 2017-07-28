@@ -6,13 +6,45 @@ const request = require('request');
 var consumer = setup_twitter_oauth();
 
 function provide_routing(app) {
-	app.get('/auth/twitter-auth', twitter_auth_handler);
-  app.get('/auth/twitter-reauth', twitter_reauth_handler);
-	app.get('/auth/twitter-return', twitter_return_handler);
+	app.get('/auth/twitter-auth', handleTwitterAuth);
+  app.get('/auth/twitter-reauth', handleTwitterReauth);
+	app.get('/auth/twitter-return', handleTwitterAuthReturn);
   //app.get('/auth/instagram-return', );
 	app.get('/app/*', serve_client_app);
   app.post('/auth/FB-request-long-token', relayLongFBTokenRequest);
+  app.post('/auth/FB-revoke', FBHandleRevoke);
 }
+
+function FBHandleRevoke(req, res) {
+  console.log('req.body');
+  console.log(req.body);
+
+  let url = (
+    'https://graph.facebook.com/'+req.body.userId+'/permissions?'
+    + 'client_id=' + process.env.FACEBOOK_APP_ID
+    + '&client_secret=' + process.env.FACEBOOK_APP_SECRET
+    + '&access_token=' + req.body.access_token
+  )
+
+  request['del']({
+      'url': url, 
+      //'qs': {
+      //  'client_id': process.env.FACEBOOK_APP_ID,
+      //  'client_secret': process.env.FACEBOOK_APP_SECRET,
+      //}
+    },
+    function(error, response, body) {
+      if(error) {
+        console.log(error);
+        console.log(error);
+      } else { 
+        console.log(body);
+        res.json(body);
+      }
+    }
+  ); 
+}
+
 
 function relayLongFBTokenRequest(req, res) {
   console.log('req.body');
@@ -54,7 +86,7 @@ function setup_twitter_oauth() {
 }
 
 
-const twitter_auth_handler = function(req, res) {
+const handleTwitterAuth = function(req, res) {
   consumer.getOAuthRequestToken(
     function(error, oauthToken, oauthTokenSecret, results){
       if (error) {
@@ -76,7 +108,7 @@ const twitter_auth_handler = function(req, res) {
 }
 
 
-const twitter_reauth_handler = function(req, res) {
+const handleTwitterReauth = function(req, res) {
   consumer.getOAuthRequestToken(
     function(error, oauthToken, oauthTokenSecret, results){
       if (error) {
@@ -99,7 +131,7 @@ const twitter_reauth_handler = function(req, res) {
 }
 
 
-const twitter_return_handler =  function(req, res){
+const handleTwitterAuthReturn =  function(req, res){
   console.log("------------------------");
   console.log(">>"+req.session.oauthRequestToken);
   console.log(">>"+req.session.oauthRequestTokenSecret);

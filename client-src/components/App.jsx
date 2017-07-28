@@ -22,6 +22,9 @@ class App extends React.Component {
     this.handleNewTodoTextChange = this.handleNewTodoTextChange.bind(this);
     this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
     this.fbLogin = this.fbLogin.bind(this);
+    this.fbLogout = this.fbLogout.bind(this);
+    this.fbRevoke = this.fbRevoke.bind(this);
+    this.fbCheckStatus = this.fbCheckStatus.bind(this);
     facebookUserStatusService.getUserStatus(this.handleUserStatusChange);
   }
 
@@ -80,8 +83,23 @@ class App extends React.Component {
     this.setState({newTodoText:e.target.value});
   }
 
+  fbLogout() {
+    facebookUserStatusService.logout(this.handleUserStatusChange);
+  }
+
+
   fbLogin() {
     facebookUserStatusService.login(this.handleUserStatusChange);
+  }
+
+  fbCheckStatus() {
+    facebookUserStatusService._refreshUserStatus();
+    facebookUserStatusService.getUserStatus(
+        this.handleUserStatusChange, true, false);
+  }
+
+  fbRevoke() {
+    facebookUserStatusService.revoke(this.handleUserStatusChange);
   }
 
   twitterReauth() {
@@ -122,6 +140,15 @@ class App extends React.Component {
           </li>
           <li>
             <button onClick={this.fbLogin}>login fb</button>
+          </li>
+          <li>
+            <button onClick={this.fbLogout}>logout fb</button>
+          </li>
+          <li>
+            <button onClick={this.fbRevoke}>revoke fb</button>
+          </li>
+          <li>
+            <button onClick={this.fbCheckStatus}>check status</button>
           </li>
         </ul>
 
