@@ -113,7 +113,7 @@ class FacebookUserStatusService {
       'Content-Type': 'application/json'
     };
 
-    fetch('/auth/FB-revoke', {
+    fetch('/auth/facebook/revoke', {
       method: 'post',
       headers: headers, 
       body: JSON.stringify({
@@ -176,7 +176,7 @@ class FacebookUserStatusService {
       'Content-Type': 'application/json'
     };
 
-    fetch('/auth/FB-request-long-token', {
+    fetch('/auth/facebook/request-long-token', {
       method: 'post',
       headers: headers, 
       body: JSON.stringify({token:token}),

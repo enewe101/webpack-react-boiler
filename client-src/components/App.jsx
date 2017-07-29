@@ -25,6 +25,8 @@ class App extends React.Component {
     this.fbLogout = this.fbLogout.bind(this);
     this.fbRevoke = this.fbRevoke.bind(this);
     this.fbCheckStatus = this.fbCheckStatus.bind(this);
+    this.instagramAuth = this.instagramAuth.bind(this);
+    this.instagramLogout = this.instagramLogout.bind(this);
     facebookUserStatusService.getUserStatus(this.handleUserStatusChange);
   }
 
@@ -102,9 +104,20 @@ class App extends React.Component {
     facebookUserStatusService.revoke(this.handleUserStatusChange);
   }
 
+  instagramAuth() {
+    window.location.href = "/auth/instagram/auth";
+  }
+
   twitterReauth() {
     window.location.href = "/auth/twitter-reauth";
   }
+
+  instagramLogout() {
+		var img = document.createElement("img");
+		img.src = "https://instagram.com/accounts/logout";
+		img.style.visibility = 'hidden';
+    document.body.appendChild(img);
+	}
 
   render() {
 
@@ -122,7 +135,7 @@ class App extends React.Component {
         <h1>Twitter Auth</h1>
         <ul>
           <li>
-            <a href="/auth/twitter-auth">
+            <a href="/auth/twitter/auth">
               <img src="/static/sign-in-with-twitter-gray.png" />
             </a>
           </li>
@@ -149,6 +162,20 @@ class App extends React.Component {
           </li>
           <li>
             <button onClick={this.fbCheckStatus}>check status</button>
+          </li>
+        </ul>
+
+        <h1>Instagram Auth</h1>
+        <ul>
+          <li>
+            <button onClick={this.instagramAuth}>
+              login
+            </button>
+          </li>
+          <li>
+            <button onClick={this.instagramLogout}>
+              logout
+            </button>
           </li>
         </ul>
 
