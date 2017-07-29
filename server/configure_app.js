@@ -23,7 +23,7 @@ function configure_app() {
 	setup_most_middleware(app);
 
 	// Get a mongoose connection
-	const mongoose = get_mongoose_connection();
+	//const mongoose = get_mongoose_connection();
 
 	// Add Additional middleware for development server
 	if(process.env.NODE_ENV == 'development') {
@@ -38,14 +38,14 @@ module.exports = configure_app;
 
 ///   HELPERS   ///
 
-function get_mongoose_connection() {
-	const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
-	const mongo_connect_url = (
-		'mongodb://' + auth_string + '@mongodb:27017/react');
-	console.log(mongo_connect_url);
-	mongoose.connect(mongo_connect_url);
-	return mongoose;
-}
+//function get_mongoose_connection() {
+//	const auth_string = process.env.APP_DB_USER + ':' + process.env.APP_DB_PASS;
+//	const mongo_connect_url = (
+//		'mongodb://' + auth_string + '@mongodb:27017/react');
+//	console.log(mongo_connect_url);
+//	mongoose.connect(mongo_connect_url);
+//	return mongoose;
+//}
 
 function setup_template_parsing(app, template_extension, views_dir) {
 	app.engine(template_extension, mustacheExpress());

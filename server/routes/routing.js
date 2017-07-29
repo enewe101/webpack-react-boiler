@@ -2,14 +2,19 @@
 const oauth = require('oauth');
 const request = require('request');
 const authRouter = require('./auth/routing.js');
+const express = require('express');
 
-function provide_routing(app) {
-  app.use('/auth', authRouter);
-	app.get('/app/*', serve_client_app);
+
+function prepare_router() {
+  const router = express.Router();
+  router.use('/auth', authRouter);
+  router.use('/api', require('./api/routing.js'));
+	router.get('/app/*', serve_client_app);
+  module.exports = router;
 }
 
 
-const serve_client_app = function(req, res){
+function serve_client_app(req, res){
 
   if(req.session && req.session.user) {
     // User is already signed in, no need to verify their credentials
@@ -47,4 +52,4 @@ const serve_client_app = function(req, res){
   }
 }
 
-module.exports = provide_routing;
+prepare_router();
