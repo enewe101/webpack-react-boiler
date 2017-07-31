@@ -1,7 +1,6 @@
 "use strict";
 const configure_app = require('./configure_app.js');
 const port = (process.env.PORT || 8080);
-const provide_routing = require('./routes/routing.js')
 const router = require('./routes/routing.js') 
 
 // Create / configure the app.

@@ -1,126 +1,86 @@
-import _ from 'underscore';
-import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import facebookUserStatusService from '../services/facebookUserStatusService';
-
-// Import sub-components
+import documentService from '../services/api'
+import { Form, SchemaForm } from './Form'
+import documentSchema from '../../server/models/Document_'
 class App extends React.Component {
 
   constructor(props) {
     super(props);
+
+    let blankDocument = {};
+    let schemaKeys = Object.keys(documentSchema);
+    for(let i=0; i<schemaKeys.length; i++){
+      blankDocument[schemaKeys[i]] = '';
+    }
+
     this.state = {
       todos: [['thing one', true], ['thing two', false]],
       getResponse: '',
       postResponse: '',
       newTodoText: '',
-      fbUser: {'authenticated':false}
+      fbUser: {'authenticated':false},
+      'deeper':{'document':blankDocument, 'test':'yo'},
+      'documents': []
     }
-    this.get = this.get.bind(this);
-    this.addItem = this.addItem.bind(this);
-    this.jsonPost = this.jsonPost.bind(this);
-    this.handleNewTodoTextChange = this.handleNewTodoTextChange.bind(this);
-    this.handleUserStatusChange = this.handleUserStatusChange.bind(this);
-    this.fbLogin = this.fbLogin.bind(this);
-    this.fbLogout = this.fbLogout.bind(this);
-    this.fbRevoke = this.fbRevoke.bind(this);
-    this.fbCheckStatus = this.fbCheckStatus.bind(this);
-    this.instagramAuth = this.instagramAuth.bind(this);
-    this.instagramLogout = this.instagramLogout.bind(this);
     facebookUserStatusService.getUserStatus(this.handleUserStatusChange);
   }
 
-  handleUserStatusChange(response) {
+  handleUserStatusChange = response => {
     console.log('receiving user status change:');
     console.log(response);
     this.setState({fbUser:response});
   }
 
-  get() {
-    fetch('/data')
-      .then(response => response.text())
-      .then((body) => this.setState({getResponse:body}));
-  }
-
-  jsonPost() {
-    const body = JSON.stringify({
-      name: 'Hubot',
-      login: 'hubot',
-    });
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-    console.log(body);
-    fetch('/data', {
-      method: 'post',
-      headers: headers,
-      body: '{"yo":"guy"}'
-    }).then(function(response) {
-      return response.text()
-    }).then(function(body) {
-      document.body.innerHTML = body;
-    })
-  }
-
-  addItem() {
-    const form = new FormData()
-    const body = JSON.stringify({name: this.state.newTodoText})
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-    fetch('/data', {
-      method: 'post',
-      headers: headers,
-      body: body
-    })
-    .then((response) => response.text())
-    .then((responseText) => {
-      this.setState({postResponse:responseText})
-    })
-  }
-
-  handleNewTodoTextChange(e) {
-    this.setState({newTodoText:e.target.value});
-  }
-
-  fbLogout() {
+  fbLogout = () => {
     facebookUserStatusService.logout(this.handleUserStatusChange);
   }
 
 
-  fbLogin() {
+  fbLogin = () => {
     facebookUserStatusService.login(this.handleUserStatusChange);
   }
 
-  fbCheckStatus() {
+  fbCheckStatus = () => {
     facebookUserStatusService._refreshUserStatus();
     facebookUserStatusService.getUserStatus(
         this.handleUserStatusChange, true, false);
   }
 
-  fbRevoke() {
+  fbRevoke = () => {
     facebookUserStatusService.revoke(this.handleUserStatusChange);
   }
 
-  instagramAuth() {
+  instagramAuth = () => {
     window.location.href = "/auth/instagram/auth";
   }
 
-  twitterReauth() {
+  twitterReauth = () => {
     window.location.href = "/auth/twitter-reauth";
   }
 
-  instagramLogout() {
+  instagramLogout = () => {
 		var img = document.createElement("img");
 		img.src = "https://instagram.com/accounts/logout";
 		img.style.visibility = 'hidden';
     document.body.appendChild(img);
 	}
 
-  render() {
+  getDocuments = () => {
+    documentService.find({}).then(json => {
+      console.log(json);
+    });
+  }
 
+  postDoc = (e) => {
+    e.preventDefault();
+    console.log('sendingn document');
+    console.log(this.state.document);
+    documentService.create(this.state.document);
+  }
+
+  render() {
 
     let fbLoginStatus;
     if(this.state.fbUser.authenticated) {
@@ -178,6 +138,27 @@ class App extends React.Component {
             </button>
           </li>
         </ul>
+
+        <h1>Documents</h1>
+        <ul>
+          <li>
+            <button onClick={this.getDocuments}>
+              get documents
+            </button>
+            {this.state.documents}
+          </li>
+        </ul>
+        <div>test: {this.state.deeper.test}</div>
+        <div>{this.state.deeper.document.text}</div>
+
+        <Form path="deeper.document" scope={this}>
+          <input name="text" type="text" />
+        </Form>
+
+        <SchemaForm key="" path="deeper.document" scope={this} 
+          schema={documentSchema}>
+          <input type="submit" onClick={this.postDoc} />
+        </SchemaForm>
 
       </div>
     )

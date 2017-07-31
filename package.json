@@ -44,6 +44,7 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "nodemon": "^1.11.0"
   }
 }

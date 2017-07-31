@@ -9,6 +9,7 @@ function prepare_router() {
   router.get('/auth', handleTwitterAuth);
   router.get('/reauth', handleTwitterReauth);
   router.get('/return', handleTwitterAuthReturn);
+  router.get('/verify', verifyCredentials);
   module.exports = router;
 }
 
@@ -21,6 +22,34 @@ var twitterConsumer = new oauth.OAuth(
   "http://"+process.env.HOST+"/auth/twitter/return",
   "HMAC-SHA1"
 );
+
+const verifyCredentials = function(req, res) {
+  twitterConsumer.get(
+    "https://api.twitter.com/1.1/account/verify_credentials.json",
+    req.session.oauthAccessToken,
+    req.session.oauthAccessTokenSecret,
+
+    function (error, data, response) {
+      if (error) {
+        console.log(error)
+        res.redirect('/sessions/connect');
+      } else {
+        var parsedData = JSON.parse(data);
+        req.session.user = {'name':parsedData.screen_name};
+        res.json({
+          'screenName': parsedData.screen_name
+        });
+
+        //  'You are signed in: '+parsedData.screen_name);
+        //  console.log('access token: ' + req.session.oauthAccessToken)
+        //  console.log('access token secret: ' 
+        //  + req.session.oauthAccessTokenSecret
+        //)
+      }
+    }
+  );
+}
+
 
 const handleTwitterAuth = function(req, res) {
   twitterConsumer.getOAuthRequestToken(
