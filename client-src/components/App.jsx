@@ -4,6 +4,7 @@ import facebookUserStatusService from '../services/facebookUserStatusService';
 import documentService from '../services/api'
 import { Form, SchemaForm } from './Form'
 import documentSchema from '../../server/models/Document_'
+import fetchit from '../services/fetchit'
 class App extends React.Component {
 
   constructor(props) {
@@ -60,6 +61,12 @@ class App extends React.Component {
     window.location.href = "/auth/twitter-reauth";
   }
 
+  twitterVerifyCredentials = () => {
+    fetchit('/auth/twitter/verify')
+      .then(response => response.json())
+      .then(json => console.log(json));
+  }
+
   instagramLogout = () => {
 		var img = document.createElement("img");
 		img.src = "https://instagram.com/accounts/logout";
@@ -102,6 +109,11 @@ class App extends React.Component {
           <li>
             <button onClick={this.twitterReauth}>
               associate another twitter account
+            </button>
+          </li>
+          <li>
+            <button onClick={this.twitterVerifyCredentials}>
+              verify credentials
             </button>
           </li>
         </ul>

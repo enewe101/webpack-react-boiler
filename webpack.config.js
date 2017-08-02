@@ -26,6 +26,7 @@ module.exports = {
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
+        babelsrc: false,
         include: path.join(__dirname, './client-src'),
         exclude: /node_modules/,
         query: {

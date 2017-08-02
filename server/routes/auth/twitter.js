@@ -19,7 +19,7 @@ var twitterConsumer = new oauth.OAuth(
   process.env.TWITTER_CONSUMER_KEY,
   process.env.TWITTER_CONSUMER_SECRET,
   "1.0A",
-  "http://"+process.env.HOST+"/auth/twitter/return",
+  "https://"+process.env.HOST+"/auth/twitter/return",
   "HMAC-SHA1"
 );
 
@@ -32,19 +32,12 @@ const verifyCredentials = function(req, res) {
     function (error, data, response) {
       if (error) {
         console.log(error)
-        res.redirect('/sessions/connect');
       } else {
         var parsedData = JSON.parse(data);
         req.session.user = {'name':parsedData.screen_name};
         res.json({
           'screenName': parsedData.screen_name
         });
-
-        //  'You are signed in: '+parsedData.screen_name);
-        //  console.log('access token: ' + req.session.oauthAccessToken)
-        //  console.log('access token secret: ' 
-        //  + req.session.oauthAccessTokenSecret
-        //)
       }
     }
   );
@@ -114,7 +107,7 @@ const handleTwitterAuthReturn =  function(req, res){
         req.session.oauthAccessTokenSecret = oauthAccessTokenSecret;
         console.log("oauthAccessToken: " + oauthAccessToken)
         console.log("oauthAccessTokenSecret: " + oauthAccessTokenSecret)
-        res.redirect('/app/logged-in');
+        res.redirect('/auth/twitter/verify');
       }
     }
   );

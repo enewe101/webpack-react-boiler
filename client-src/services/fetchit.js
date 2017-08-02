@@ -6,6 +6,7 @@ function encode_query(query) {
 
 function fetchit(url, options) {
   let query = null;
+  options = options || {};
   if(options.query) {
     url = url + '?' + encode_query(options.query);
     delete options.query;
