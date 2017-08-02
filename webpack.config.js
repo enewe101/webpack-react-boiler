@@ -20,19 +20,23 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/'
   },
+
   module: {
     loaders: [
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
+        babelsrc: false,
         include: path.join(__dirname, './client-src'),
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
+          presets: ['es2015', 'react'],
+          plugins: [['transform-class-properties']]
         }
       }
     ]
   },
+
   plugins: [
     HtmlWebpackPluginConfig,
     new webpack.optimize.OccurenceOrderPlugin(),

@@ -3,7 +3,7 @@ passgen () {
 	date +%s | sha256sum | base64 | head -c 32 ; echo
 }
 
-my_env=$(gpg < .keys)
+my_env=$(gpg < .keys.gpg)
 my_env=${my_env}'
 export PROJ_NAME=webpack-react-boiler
 export USE_SSL=1
