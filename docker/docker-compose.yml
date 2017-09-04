@@ -3,6 +3,7 @@ services:
 
   node:
     environment:
+      - SENDGRID_API_KEY
       - APP_DB_USER
       - APP_DB_PASS
       - NODE_ENV
@@ -18,6 +19,7 @@ services:
       context: ../
       dockerfile: docker/node-dockerfile
       args:
+        - SENDGRID_API_KEY
         - APP_DB_USER
         - APP_DB_PASS
         - NODE_ENV

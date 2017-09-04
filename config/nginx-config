@@ -35,6 +35,9 @@ server {
 		access_log off;
 		expires 24h;
 	}
+  location = / {
+    return 307 https://aventamedia.com/static/index.html;
+  }
 
 	location / {
 		proxy_set_header X-Real-IP $remote_addr;
