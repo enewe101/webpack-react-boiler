@@ -1,3 +1,6 @@
+# Set environment
+source <(curl https://raw.githubusercontent.com/enewe101/webpack-react-boiler/master/.env)
+
 # Enable firewall
 ufw default deny incoming
 ufw default allow outgoing
