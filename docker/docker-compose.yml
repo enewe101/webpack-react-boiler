@@ -33,6 +33,7 @@ services:
         - FACEBOOK_APP_SECRET
     ports:
       - 80:80
+      - 8000:8000 # used by socket.io
       - 443:443
     links:
       - mongodb

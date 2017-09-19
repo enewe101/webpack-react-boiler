@@ -7,6 +7,7 @@ ufw default allow outgoing
 ufw allow ssh
 ufw allow http
 ufw allow https
+ufw allow 8000
 ufw enable
 
 # Create a non-root user to run the app

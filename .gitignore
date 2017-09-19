@@ -4,6 +4,8 @@
 *~
 .DS_Store
 .env.gpg
+.env
+.env.bk
 .keys*
 npm-debug.log
 node_modules

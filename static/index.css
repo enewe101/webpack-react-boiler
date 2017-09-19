@@ -781,7 +781,7 @@ body {
 
 
 .team-col-wrapper {
-  width: 68vw;
+  width: 82vw;
   margin: auto;
   margin-top: 3vw;
 }
@@ -798,13 +798,14 @@ body {
   }
 
   .team-member {
-    width: 30vw;
+    width: 24vw;
     display: inline-block;
     vertical-align: top;
+    margin-left: 4vw;
   }
 
   .team-member-1 {
-    margin-right: 7vw;
+    margin-left: 0vw;
   }
 
   .bio {
@@ -833,13 +834,14 @@ body {
   }
 
   .team-member {
-    width: 68vw;
+    width: 82vw;
     display: inline-block;
     vertical-align: top;
+    margin-top: 7vw;
   }
 
   .team-member-1 {
-    margin-bottom: 7vw;
+    margin-bottom: 0;
   }
 
   .bio {
@@ -863,5 +865,9 @@ body {
 
 .koustuv {
   background-image: url("koustuv.jpg");
+}
+
+.michel {
+  background-image: url("michel-balanced.jpg");
 }
 

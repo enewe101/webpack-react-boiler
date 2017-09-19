@@ -7,7 +7,9 @@ ARG HOST
 
 # Install dependencies -- nodejs, nginx, pm2
 RUN apt-get update > /dev/null
-RUN apt-get -qq -y install nodejs npm nginx vim > /dev/null
+RUN apt-get -qq -y install npm nginx vim curl > /dev/null
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get install -y nodejs
 RUN npm install -g --silent pm2 > /dev/null
 # Because of a name collision, the "node" command gets called "nodejs" on Ubuntu.  
 # Force it to be "node" so that npm commands work properly.

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
 import App from './components/App.jsx';
+import DemoConsole from './components/DemoConsole.jsx';
 import _ from 'underscore';
 import path from 'path';
 
@@ -21,6 +22,7 @@ const renderApp = () => {
 	  <div>
 	    <Route exact path='/app/logged-in' component={App} />
 	    <Route exact path='/app/login' component={TestComponent} />
+      <Route path='/demo' component={DemoConsole} />
     </div>
   </BrowserRouter>,
 	document.getElementById('root'));

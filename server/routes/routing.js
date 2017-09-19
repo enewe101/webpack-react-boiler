@@ -1,24 +1,28 @@
 "use strict";
-const oauth = require('oauth');
+const express = require('express');
 const request = require('request');
 const authRouter = require('./auth/routing.js');
-const express = require('express');
-
+const apiRouter = require('./api/routing.js')
+const demoRouter = require('./demo/routing.js')
+const oauth = require('oauth');
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 function prepare_router() {
   const router = express.Router();
+
   router.use('/auth', authRouter);
-  router.use('/api', require('./api/routing.js'));
-  router.get('/app/*', serve_client_app);
+  router.use('/api', apiRouter);
+  router.use('/demo', demoRouter);
+  router.get('/app/*', serveClientApp);
   router.post('/mail', send_mail);
+
   module.exports = router;
 }
 
 
-function serve_client_app(req, res){
+function serveClientApp(req, res){
   let GLOBALS = {
     'FACEBOOK_APP_ID': process.env.FACEBOOK_APP_ID
   };

@@ -1,6 +1,6 @@
 "use strict";
 const express = require('express');
-const Entity = require('../../models/Document.js')
+const Entity = require('../../models/Tweet.js')
 
 // Build and export the router.  This is called at the bottom of the file,
 // after handlers are defined.
@@ -86,9 +86,6 @@ function deleteEntities(req, res) {
 }
 
 
-prepare_router();
-
-
 // These functions are useful to automatically convert fields that are supposed
 // to be ObjectIds from srings into actual objectIds.
 const getFieldsThatAreObjectId = entity => {
@@ -109,4 +106,7 @@ const convertIds = instance => {
   }
   return convertedInstance
 }
+
+
+prepare_router();
 
