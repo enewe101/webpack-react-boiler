@@ -20,9 +20,13 @@ class TweetList extends React.Component {
 
   render() {
     return (
-      <div>
-        I am the TweetList.
-        <Tweet/>
+      <div className="TweetList">
+        I am the TweetList.  I have { this.props.tweets.length } tweets.
+        {
+          this.props.tweets.map((tweet, tweet_id) => 
+            <Tweet key={tweet_id} {...tweet} />
+          )
+        }
       </div>
     )
   }

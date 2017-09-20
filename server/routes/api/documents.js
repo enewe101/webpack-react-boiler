@@ -10,7 +10,7 @@ function prepare_router() {
   router.get('/:entity_id', getOneEntity);
   router.post('/', createEntity);
   router.put('/:entity_id', updateEntity);
-  router['delete']('/:entity_id', deleteEntities);
+  router['delete']('/:entity_id', deleteEntity);
   module.exports = router;
 }
 
@@ -74,7 +74,7 @@ function updateEntity(req, res) {
 }
 
 
-function deleteEntities(req, res) {
+function deleteEntity(req, res) {
   Entity.deleteOne({'_id':req.params.entity_id}, function(err) {
     if(err) {
       console.log(err);

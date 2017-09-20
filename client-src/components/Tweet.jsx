@@ -11,8 +11,11 @@ class Tweet extends React.Component {
 
   render() {
     return (
-      <div>
-        I am a tweet
+      <div className="Tweet">
+        I am a tweet <br/>
+        text: {this.props.text} <br/>
+        target: {this.props.target} <br/>
+        stance: {this.props.stance}
       </div>
     )
   }

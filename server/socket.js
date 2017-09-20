@@ -1,4 +1,6 @@
 const live = false;
+const Tweet = require('./models/Tweet.js')
+
 
 function startSocket(server) {
   const io = require('socket.io')(server);
@@ -18,11 +20,24 @@ function startSocket(server) {
 
 
 function simulateStreamTweets(client) {
-  function sendNextTweet() {
-    client.emit('timer', {'yo':'thing'});
-    setTimeout(sendNextTweet, Math.random()*8000);
+
+  Tweet.find({}, function(err, tweets){
+    if(err) {
+      console.log(err);
+      client.emit('timer', err);
+    } else {
+      startTweetFeed(tweets);
+    }
+  });
+
+  function startTweetFeed(tweets) {
+    function sendNextTweet() {
+      tweet = tweets.pop();
+      client.emit('timer', tweet);
+      setTimeout(sendNextTweet, Math.random()*8000);
+    }
+    sendNextTweet();
   }
-  sendNextTweet();
 }
 
 

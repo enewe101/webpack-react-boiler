@@ -1,61 +1,17 @@
-import fetchit from './fetchit';
+import CrudService from './CrudService.js';
 
 
-const POST_HEADERS = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
-};
+// The api service will let us request the following kinds of objects using
+// standard CRUD operations.
+let crudEndpoints = ['tweets', 'documents'];
 
-
-// NOTE: conflict: fetch expects second arg to be options (as done below when
-// using fetchit), but fethit expects second arg to be url query params.
-class DocumentService {
-
-  // These functions return promises, which supply a .then(callback) function,
-  // which supplies the fetched result to the callback.
-  //
-  // e.g.:
-  //      documentService.get().then(documents => console.log(documents))
-  //
-
-  get(doc_id) {
-    return fetchit('/api/documents/' + doc_id)
-      .then(response => response.json());
-  }
-
-  find(query, options) {
-    options = options || {};
-    return fetchit('/api/documents/find', {
-      method: 'post',
-      headers: POST_HEADERS, 
-      body: JSON.stringify([query, options])
-    }).then(response => response.json());
-  }
-
-  create(doc) {
-    return fetchit('/api/documents', {
-      method: 'post',
-      headers: POST_HEADERS, 
-      body: JSON.stringify(doc)
-    }).then(response => response.json());
-  }
-
-  update(doc_id, doc) {
-    return fetchit('/api/documents/'+doc_id, {
-      method: 'put',
-      headers: headers, 
-      body: JSON.stringify(doc),
-    });
-  }
-
-  del(doc_id) {
-    return fetchit('/api/documents/' + doc_id, {method: 'delete'})
-      .then(response => response.json());
-  }
-
+// Add subservices for standard CRUD operations on various objects
+let api = {};
+for(let i=0; i<crudEndpoints.length; i++){
+  api[crudEndpoints[i]] = new CrudService('/api/' + crudEndpoints[i] + '/');
 }
 
-let documentService = new DocumentService()
+// Add any special api subservices
+// api.someSpecialService = new MySpecialService();
 
-export default documentService;
-
+export default api;

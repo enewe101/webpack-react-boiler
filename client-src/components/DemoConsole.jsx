@@ -3,13 +3,8 @@ import ReactDOM from 'react-dom';
 import { Form, SchemaForm } from './Form'
 import fetchit from '../services/fetchit'
 import TweetList from './TweetList.jsx'
-
-import openSocket from 'socket.io-client'
-const socket = openSocket('https://aventamedia.com');
-function subscribeToTimer(cb) {
-  socket.on('timer', timestamp => cb(null, timestamp));
-  socket.emit('subscribeToTimer', 1000);
-}
+import api from '../services/api.js';
+import subscribeToTweetStream from '../services/TweetStream.js';
 
 
 class DemoConsole extends React.Component {
@@ -20,6 +15,16 @@ class DemoConsole extends React.Component {
       tweets: [],
       filter: null,
     }
+    this.numToKeep = 40;
+    subscribeToTweetStream(this.displayTweet);
+  }
+
+  displayTweet = (err, tweet) => {
+    console.log('bo');
+    console.log(tweet);
+    this.setState((prevState , props) => {
+      return {'tweets': [tweet, ...prevState.tweets].slice(0,this.numToKeep)};
+    });
   }
 
   handleUserStatusChange = response => {
@@ -29,13 +34,10 @@ class DemoConsole extends React.Component {
   }
 
   render() {
-    subscribeToTimer(function(err, timestamp){
-      console.log(timestamp);
-    });
     return (
-      <div>
+      <div className="DemoConsole" >
         I am the DemoConsole
-        <TweetList/>
+        <TweetList tweets={this.state.tweets} />
       </div>
     )
   }
