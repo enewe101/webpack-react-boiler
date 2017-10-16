@@ -40,6 +40,7 @@ services:
     image: 'node:1'
     volumes:
       #- ..:/app
+      - ../../letsencrypt:/etc/letsencrypt
       - ${APP_VOLUME_MAPPING}
 
 

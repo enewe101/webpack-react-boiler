@@ -2,11 +2,14 @@
 *.swo
 ~*
 *~
+__pycache__
 .DS_Store
 .env.gpg
 .env
 .env.bk
 .keys*
+env
+stance-demo
 npm-debug.log
 node_modules
 client-build
@@ -15,3 +18,4 @@ dump
 cert
 log
 del
+renew.log

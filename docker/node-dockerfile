@@ -32,6 +32,9 @@ RUN npm install --silent
 # Now copy all the rest of the files and build the app
 COPY . /app
 
+# Copy the crontab that renews certificates
+RUN crontab /app/bin/cert-renew-crontab
+
 # Configure nginx to serve the app.  Either with ssl forced, or not enabled
 RUN test -z $USE_SSL || test $USE_SSL -eq 0 && \
     cp config/nginx-config-nossl /etc/nginx/sites-available/$HOST || true

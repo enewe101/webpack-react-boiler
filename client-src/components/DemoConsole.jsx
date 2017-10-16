@@ -36,7 +36,9 @@ class DemoConsole extends React.Component {
   render() {
     return (
       <div className="DemoConsole" >
-        I am the DemoConsole
+        <div className="Title" >
+        <center>Live Stance Detection</center>
+        </div>
         <TweetList tweets={this.state.tweets} />
       </div>
     )
