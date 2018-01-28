@@ -53,4 +53,5 @@ RUN test "$NODE_ENV" = production && npm run prod-build || true
 CMD /etc/init.d/nginx restart\
   && (test "$NODE_ENV" = development && npm install && npm run dev-build || true)\
   && pm2 start config/ecosystem.config.json\
+  && /etc/init.d/cron start\
   && tail -f /dev/null
